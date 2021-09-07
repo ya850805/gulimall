@@ -5,14 +5,30 @@ spring:
         server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: google_route
-          uri: https://google.com
+        - id: admin_route
+          uri: lb://renren-fast
           predicates:
-            - Query=url, google
-        - id: twitch_route
-          uri: https://twitch.tv
-          predicates:
-            - Query=url, twitch
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+
+#        - id: google_route
+#          uri: https://google.com
+#          predicates:
+#            - Query=url, google
+#
+#        - id: twitch_route
+#          uri: https://twitch.tv
+#          predicates:
+#            - Query=url, twitch
+#
+#        - id: admin_route
+#          uri: lb://renren-fast
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
   application:
     name: gulimall-gateway
 
