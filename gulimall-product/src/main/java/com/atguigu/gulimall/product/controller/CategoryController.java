@@ -74,11 +74,15 @@ public class CategoryController {
 
     /**
      * 删除
+     * @RequestBody：獲取請求體，必須發送POST請求
+     * SpringMVC自動將請求體的數據(json)，轉為對應的物件
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+        //1. 檢查當前刪除的菜單，是否被別的地方刪除
 
+//		categoryService.removeByIds(Arrays.asList(catIds));
+        categoryService.removeMenuByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
