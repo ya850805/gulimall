@@ -16,7 +16,6 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 
 
-
 /**
  * 属性分组
  *
@@ -31,11 +30,15 @@ public class AttrGroupController {
     private AttrGroupService attrGroupService;
 
     /**
-     * 列表
+     * 依照三級分類id，查詢對應的屬性分組列表
+     *
+     * @param params    查詢條件，map中鍵值為key代表查詢條件(可查attr_group_id或attr_group_name)
+     * @param catelogId 三級分類id，傳入0代表不依照三級分類id來做查詢
+     * @return 屬性分組列表(分頁)
      */
     @RequestMapping("/list/{catelogId}")
     public R list(@RequestParam Map<String, Object> params,
-                  @PathVariable("catelogId") Long catelogId){
+                  @PathVariable("catelogId") Long catelogId) {
 //        PageUtils page = attrGroupService.queryPage(params);
 
         PageUtils page = attrGroupService.queryPage(params, catelogId);
@@ -48,8 +51,8 @@ public class AttrGroupController {
      * 信息
      */
     @RequestMapping("/info/{attrGroupId}")
-    public R info(@PathVariable("attrGroupId") Long attrGroupId){
-		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
+    public R info(@PathVariable("attrGroupId") Long attrGroupId) {
+        AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
 
         return R.ok().put("attrGroup", attrGroup);
     }
@@ -58,8 +61,8 @@ public class AttrGroupController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.save(attrGroup);
+    public R save(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.save(attrGroup);
 
         return R.ok();
     }
@@ -68,8 +71,8 @@ public class AttrGroupController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrGroupEntity attrGroup){
-		attrGroupService.updateById(attrGroup);
+    public R update(@RequestBody AttrGroupEntity attrGroup) {
+        attrGroupService.updateById(attrGroup);
 
         return R.ok();
     }
@@ -78,8 +81,8 @@ public class AttrGroupController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+    public R delete(@RequestBody Long[] attrGroupIds) {
+        attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
 
         return R.ok();
     }
