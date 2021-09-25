@@ -3,9 +3,7 @@ package com.atguigu.gulimall.product.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -82,5 +80,28 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 })
                 .collect(Collectors.toList());
         return children;
+    }
+
+    //[2, 25, 225]
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        List<Long> paths = new ArrayList<>();
+        List<Long> parentPath = findParentPath(catelogId, paths);
+
+        //reverse，因為我們是從孫->子->父
+        Collections.reverse(parentPath);
+
+        return (Long[])parentPath.toArray(new Long[parentPath.size()]);
+    }
+
+    private List<Long> findParentPath(Long catelogId, List<Long> paths) {
+        //1.收集當前節點id
+        paths.add(catelogId);
+        CategoryEntity byId = getById(catelogId);
+        if(byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), paths);
+        }
+
+        return paths;
     }
 }
