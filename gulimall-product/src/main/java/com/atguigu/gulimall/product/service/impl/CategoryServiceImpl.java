@@ -91,7 +91,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         //reverse，因為我們是從孫->子->父
         Collections.reverse(parentPath);
 
-        return (Long[])parentPath.toArray(new Long[parentPath.size()]);
+        return parentPath.toArray(new Long[parentPath.size()]);
     }
 
     private List<Long> findParentPath(Long catelogId, List<Long> paths) {
