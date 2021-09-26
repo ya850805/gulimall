@@ -104,4 +104,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return paths;
     }
+
+    /**
+     * 級聯更新所有關聯的數據
+     * @param category
+     */
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        //TODO 更新其他關連
+    }
 }
