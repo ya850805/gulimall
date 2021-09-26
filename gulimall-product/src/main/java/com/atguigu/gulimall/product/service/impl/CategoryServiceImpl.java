@@ -15,6 +15,7 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.product.dao.CategoryDao;
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
@@ -110,6 +111,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * @param category
      */
     @Override
+    @Transactional
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);
         //TODO 更新其他關連

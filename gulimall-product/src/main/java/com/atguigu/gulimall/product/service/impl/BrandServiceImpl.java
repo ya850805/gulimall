@@ -14,6 +14,7 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.product.dao.BrandDao;
 import com.atguigu.gulimall.product.entity.BrandEntity;
 import com.atguigu.gulimall.product.service.BrandService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("brandService")
@@ -38,6 +39,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
     }
 
     @Override
+    @Transactional
     public void updateDetail(BrandEntity brand) {
         //保證冗餘字段的數據一致(反正規化，其他表可能也有存name等等的冗餘數據，以便查詢較快)
         this.updateById(brand);
