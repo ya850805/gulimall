@@ -29,6 +29,7 @@ public class AttrController {
     private AttrService attrService;
 
     /**
+     * 查詢銷售&基本屬性共用方法
      * type=base：銷售屬性
      * type=sale：基本屬性
      * @param params
