@@ -179,6 +179,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     /**
      * 根據分組id查找關聯的所有基本屬性
+     *
      * @param attrgroupId
      * @return
      */
@@ -186,6 +187,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     public List<AttrEntity> getRelationAttr(Long attrgroupId) {
         List<AttrAttrgroupRelationEntity> entities = attrAttrgroupRelationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrgroupId));
         List<Long> attrIds = entities.stream().map((attr) -> attr.getAttrId()).collect(Collectors.toList());
+
+        if (attrIds == null || attrIds.size() == 0) {
+            return null;
+        }
         Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
         return (List<AttrEntity>) attrEntities;
     }
@@ -200,6 +205,49 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             return attrAttrgroupRelationEntity;
         }).collect(Collectors.toList());
         attrAttrgroupRelationDao.deleteBatchRelation(entities);
+    }
+
+    /**
+     * 獲取當前分組沒有關聯的所有屬性
+     *
+     * @param params
+     * @param attrgroupId
+     * @return
+     */
+    @Override
+    public PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId) {
+        //1. 當前分組只能關聯自己所屬的分類裡面的所有屬性
+        AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrgroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+
+        //2. 當前分組只能關聯別的分組沒有引用的屬性
+        //2.1) 當前分類下的其他分組
+        List<AttrGroupEntity> group = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
+        List<Long> collect =
+                group.stream().map(item -> item.getAttrGroupId()).collect(Collectors.toList());
+
+        //2.2) 這些分組關聯的屬性
+        List<AttrAttrgroupRelationEntity> groupId =
+                attrAttrgroupRelationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_group_id", collect));
+        List<Long> attrIds = groupId.stream().map(item -> item.getAttrId()).collect(Collectors.toList());
+
+        //2.3) 從當前分類的所有屬性中移除這些屬性
+        QueryWrapper<AttrEntity> wrapper =
+                new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId).eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        if (attrIds != null && attrIds.size() > 0) {
+            wrapper.notIn("attr_id", attrIds);
+        }
+
+        String key = (String) params.get("key");
+        if (StringUtils.isNotBlank(key)) {
+            wrapper.and(w -> {
+                w.eq("attr_id", key).or().like("attr_name", key);
+            });
+        }
+        IPage<AttrEntity> page =
+                this.page(new Query<AttrEntity>().getPage(params), wrapper);
+
+        return new PageUtils(page);
     }
 
 }

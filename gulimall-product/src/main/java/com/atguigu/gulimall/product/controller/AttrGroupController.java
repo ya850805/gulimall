@@ -48,6 +48,13 @@ public class AttrGroupController {
         return R.ok().put("data", entities);
     }
 
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrgroupId,
+                            @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelationAttr(params, attrgroupId);
+        return R.ok().put("data", page);
+    }
+
     /**
      * 依照三級分類id，查詢對應的屬性分組列表
      *
