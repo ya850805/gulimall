@@ -2,13 +2,17 @@ package com.atguigu.gulimall.product.controller;
 
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
+import com.atguigu.gulimall.product.entity.BrandEntity;
 import com.atguigu.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
+import com.atguigu.gulimall.product.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -21,6 +25,20 @@ import java.util.Map;
 public class CategoryBrandRelationController {
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @GetMapping("/brands/list")
+    public R relationBrandsList(@RequestParam("catId") Long catId) {
+        List<BrandEntity> entities = categoryBrandRelationService.getBrandsByCatId(catId);
+        List<BrandVo> collect =
+                entities.stream().map(item -> {
+                    BrandVo vo = new BrandVo();
+                    vo.setBrandId(item.getBrandId());
+                    vo.setBrandName(item.getName());
+                    return vo;
+                }).collect(Collectors.toList());
+
+        return R.ok().put("data", collect);
+    }
 
     /**
      * 列表
