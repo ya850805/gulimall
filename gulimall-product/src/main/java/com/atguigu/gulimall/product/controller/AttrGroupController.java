@@ -41,6 +41,11 @@ public class AttrGroupController {
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 
+    /**
+     * Find all attrgroups and relational attrs with catelogId
+     * @param catelogId 
+     * @return data with AttrGroupWithAttrsVo list
+     */
     @GetMapping("/{catelogId}/withattr")
     public R getAttrGroupWithAttrs(@PathVariable("catelogId") Long catelogId) {
         List<AttrGroupWithAttrsVo> vos = attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId);
