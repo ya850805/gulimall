@@ -43,7 +43,7 @@ public class AttrGroupController {
 
     /**
      * Find all attrgroups and relational attrs with catelogId
-     * @param catelogId 
+     * @param catelogId
      * @return data with AttrGroupWithAttrsVo list
      */
     @GetMapping("/{catelogId}/withattr")
