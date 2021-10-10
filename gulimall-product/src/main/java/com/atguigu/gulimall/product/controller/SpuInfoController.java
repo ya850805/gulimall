@@ -56,9 +56,9 @@ public class SpuInfoController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody SpuSaveVo spuInfo){
+    public R save(@RequestBody SpuSaveVo vo){
 //		spuInfoService.save(spuInfo);
-
+        spuInfoService.saveSpuInfo(vo);
         return R.ok();
     }
 
