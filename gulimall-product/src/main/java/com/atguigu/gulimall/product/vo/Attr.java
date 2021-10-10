@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class Attr {
-    private long attrId;
+    private Long attrId;
     private String attrName;
     private String attrValue;
 }

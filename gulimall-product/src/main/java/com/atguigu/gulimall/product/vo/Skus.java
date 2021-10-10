@@ -23,5 +23,5 @@ public class Skus {
     private BigDecimal fullPrice;
     private BigDecimal reducePrice;
     private int priceStatus;
-    private List<String> memberPrice;
+    private List<MemberPrice> memberPrice;
 }

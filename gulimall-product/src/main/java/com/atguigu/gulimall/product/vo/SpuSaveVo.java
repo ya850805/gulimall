@@ -2,6 +2,7 @@ package com.atguigu.gulimall.product.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
 public class SpuSaveVo {
     private String spuName;
     private String spuDescription;
-    private long catalogId;
-    private long brandId;
-    private double weight;
+    private Long catalogId;
+    private Long brandId;
+    private BigDecimal weight;
     private int publishStatus;
     private List<String> decript;
     private List<String> images;

@@ -8,7 +8,8 @@ import java.math.BigDecimal;
  * @author Jason
  */
 @Data
-public class Bounds {
-    private BigDecimal buyBounds;
-    private BigDecimal growBounds;
+public class MemberPrice {
+    private Long id;
+    private String name;
+    private BigDecimal price;
 }
