@@ -1,11 +1,8 @@
 package com.atguigu.gulimall.product.service.impl;
 
-import com.atguigu.gulimall.product.entity.AttrEntity;
-import com.atguigu.gulimall.product.entity.ProductAttrValueEntity;
-import com.atguigu.gulimall.product.entity.SpuInfoDescEntity;
+import com.atguigu.gulimall.product.entity.*;
 import com.atguigu.gulimall.product.service.*;
-import com.atguigu.gulimall.product.vo.BaseAttrs;
-import com.atguigu.gulimall.product.vo.SpuSaveVo;
+import com.atguigu.gulimall.product.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +19,8 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.Query;
 
 import com.atguigu.gulimall.product.dao.SpuInfoDao;
-import com.atguigu.gulimall.product.entity.SpuInfoEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 
 @Service("spuInfoService")
@@ -40,6 +37,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Autowired
     private ProductAttrValueService productAttrValueService;
+
+    @Autowired
+    private SkuInfoService skuInfoService;
+
+    @Autowired
+    private SkuImagesService skuImagesService;
+
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -88,11 +94,54 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         productAttrValueService.saveProductAttr(collect);
 
         //5. 保存spu的積分信息(gulimall_sms -> sms_spu_bounds)
-
         //5. 保存當前spu對應的所有sku信息
-        //5.1 sku基本信息(pms_sku_info)
-        //5.2 sku的圖片信息(pms_sku_images)
-        //5.3 sku的銷售屬性信息(pms_sku_sale_attr_value)
+        List<Skus> skus = vo.getSkus();
+        if (!CollectionUtils.isEmpty(skus)) {
+            skus.forEach(item -> {
+                String defaultImg = "";
+                for (Images image : item.getImages()) {
+                    if (image.getDefaultImg() == 1) {
+                        defaultImg = image.getImgUrl();
+                    }
+                }
+
+                SkuInfoEntity skuInfoEntity = new SkuInfoEntity();
+                BeanUtils.copyProperties(item, skuInfoEntity);
+                skuInfoEntity.setBrandId(infoEntity.getBrandId());
+                skuInfoEntity.setCatalogId(infoEntity.getCatalogId());
+                skuInfoEntity.setSaleCount(0L);
+                skuInfoEntity.setSpuId(infoEntity.getId());
+                skuInfoEntity.setSkuDefaultImg(defaultImg);
+                //5.1 sku基本信息(pms_sku_info)
+                skuInfoService.saveSkuInfo(skuInfoEntity);
+
+                Long skuId = skuInfoEntity.getSkuId();
+
+                List<SkuImagesEntity> imagesEntities =
+                        item.getImages().stream().map(img -> {
+                            SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
+                            skuImagesEntity.setSkuId(skuId);
+                            skuImagesEntity.setImgUrl(img.getImgUrl());
+                            skuImagesEntity.setDefaultImg(img.getDefaultImg());
+                            return skuImagesEntity;
+                        }).collect(Collectors.toList());
+                //5.2 sku的圖片信息(pms_sku_images)
+                skuImagesService.saveBatch(imagesEntities);
+
+                //5.3 sku的銷售屬性信息(pms_sku_sale_attr_value)
+                List<Attr> attr = item.getAttr();
+                List<SkuSaleAttrValueEntity> skuSaleAttrValueEntities =
+                        attr.stream().map(a -> {
+                            SkuSaleAttrValueEntity attrValueEntity = new SkuSaleAttrValueEntity();
+                            BeanUtils.copyProperties(a, attrValueEntity);
+                            attrValueEntity.setSkuId(skuId);
+                            return attrValueEntity;
+                        }).collect(Collectors.toList());
+                skuSaleAttrValueService.saveBatch(skuSaleAttrValueEntities);
+            });
+        }
+
+
         //5.4 sku的優惠、滿減信息(gulimall_sms -> sms_sku_ladder/sms_sku_full_reduction/sms_member_price)
 
     }
