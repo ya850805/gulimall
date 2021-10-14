@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 
 /**
- * 品牌
+ * 品牌controller
  *
  * @author jason
  * @email ya850805@gmail.com
