@@ -21,7 +21,7 @@ public class SpuInfoDescEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 商品id
+	 * 商品id，type=IdType.INPUY代表主鍵為填入的，非自增主鍵
 	 */
 	@TableId(type = IdType.INPUT)
 	private Long spuId;
