@@ -18,7 +18,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * sku信息
+ * sku信息controller
  *
  * @author jason
  * @email ya850805@gmail.com
@@ -52,7 +52,7 @@ public class SkuInfoController {
     }
 
     /**
-     * 保存
+     * 保存skuInfo
      */
     @RequestMapping("/save")
     public R save(@RequestBody SkuInfoEntity skuInfo){
