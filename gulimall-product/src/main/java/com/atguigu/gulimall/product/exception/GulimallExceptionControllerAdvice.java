@@ -20,6 +20,7 @@ import java.util.Map;
 @RestControllerAdvice(basePackages = "com.atguigu.gulimall.product.controller")
 public class GulimallExceptionControllerAdvice {
 
+    // 參數錯誤Exception
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public R handleValidException(MethodArgumentNotValidException e) {
 //        log.error("數據校驗出現問題：{}，異常類型：{}", e.getMessage(), e.getClass());
@@ -32,6 +33,7 @@ public class GulimallExceptionControllerAdvice {
         return R.error(BizCodeEnum.VALID_EXCEPTION.getCode(), BizCodeEnum.VALID_EXCEPTION.getMessage()).put("data", errorMap);
     }
 
+    // 其餘的Exception
     @ExceptionHandler(value = Throwable.class)
     public R handleException(Throwable throwable) {
         return R.error(BizCodeEnum.UNKNOW_EXCEPTION.getCode(), BizCodeEnum.UNKNOW_EXCEPTION.getMessage());
