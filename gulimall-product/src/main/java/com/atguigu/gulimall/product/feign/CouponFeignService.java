@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * @author Jason
+ * feign service to call gulimall-coupon micro service
  */
 @FeignClient("gulimall-coupon")
 public interface CouponFeignService {
