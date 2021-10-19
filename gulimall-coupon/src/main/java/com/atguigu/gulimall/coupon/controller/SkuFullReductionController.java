@@ -15,7 +15,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * 商品满减信息
+ * 商品满减信息controller
  *
  * @author jason
  * @email ya850805@gmail.com
