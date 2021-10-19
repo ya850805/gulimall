@@ -7,10 +7,12 @@ import com.atguigu.gulimall.product.entity.*;
 import com.atguigu.gulimall.product.feign.CouponFeignService;
 import com.atguigu.gulimall.product.service.*;
 import com.atguigu.gulimall.product.vo.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +66,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageUtils(page);
     }
 
+    //TODO 高級篇部分完善
     @Override
     @Transactional
     public void saveSpuInfo(SpuSaveVo vo) {
@@ -140,11 +143,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                             skuImagesEntity.setImgUrl(img.getImgUrl());
                             skuImagesEntity.setDefaultImg(img.getDefaultImg());
                             return skuImagesEntity;
-                        }).collect(Collectors.toList());
+                        }).filter(entity -> StringUtils.isNotBlank(entity.getImgUrl())).collect(Collectors.toList());
                 //5.2 sku的圖片信息(pms_sku_images)
                 skuImagesService.saveBatch(imagesEntities);
 
-                //TODO 沒有圖片路徑的無需保存
                 //5.3 sku的銷售屬性信息(pms_sku_sale_attr_value)
                 List<Attr> attr = item.getAttr();
                 List<SkuSaleAttrValueEntity> skuSaleAttrValueEntities =
@@ -160,9 +162,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 SkuReductionTo skuReductionTo = new SkuReductionTo();
                 BeanUtils.copyProperties(item, skuReductionTo);
                 skuReductionTo.setSkuId(skuId);
-                R r1 = couponFeignService.saveSkuReduction(skuReductionTo);
-                if (r1.getCode() != 0) {
-                    log.error("遠程保存sku優惠信息失敗");
+                if (skuReductionTo.getFullCount() > 0 && skuReductionTo.getFullPrice().compareTo(BigDecimal.ZERO) == 1) {
+                    R r1 = couponFeignService.saveSkuReduction(skuReductionTo);
+                    if (r1.getCode() != 0) {
+                        log.error("遠程保存sku優惠信息失敗");
+                    }
                 }
             });
         }
