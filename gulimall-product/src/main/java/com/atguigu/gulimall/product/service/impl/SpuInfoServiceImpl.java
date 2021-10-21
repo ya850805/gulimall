@@ -189,10 +189,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         if (StringUtils.isNotBlank((String) params.get("status"))) {
             wrapper.eq("publish_status", (String) params.get("status"));
         }
-        if (StringUtils.isNotBlank((String) params.get("brandId"))) {
+        if (StringUtils.isNotBlank((String) params.get("brandId")) && !"0".equalsIgnoreCase((String) params.get("brandId"))) {
             wrapper.eq("brand_id", (String) params.get("brandId"));
         }
-        if (StringUtils.isNotBlank((String) params.get("catelogId"))) {
+        if (StringUtils.isNotBlank((String) params.get("catelogId")) && !"0".equalsIgnoreCase((String) params.get("catelogId"))) {
             wrapper.eq("catalog_id", (String) params.get("catelogId"));
         }
         IPage<SpuInfoEntity> page = this.page(
