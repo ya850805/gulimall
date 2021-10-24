@@ -18,7 +18,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * 
+ * 採購需求controller
  *
  * @author jason
  * @email ya850805@gmail.com
