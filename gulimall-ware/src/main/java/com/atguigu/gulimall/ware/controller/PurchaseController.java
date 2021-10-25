@@ -31,6 +31,16 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     /**
+     * 查詢"未領取"的採購單
+     */
+    @RequestMapping("/unreceive/list")
+    public R unreceiveList(@RequestParam Map<String, Object> params){
+        PageUtils page = purchaseService.queryPageUnreceivePurchase(params);
+
+        return R.ok().put("page", page);
+    }
+
+    /**
      * 列表
      */
     @RequestMapping("/list")
