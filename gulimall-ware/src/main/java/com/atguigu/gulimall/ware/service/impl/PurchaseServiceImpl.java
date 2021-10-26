@@ -64,6 +64,8 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
             purchaseId = purchaseEntity.getId();
         }
 
+        //TODO 確認採購單狀態是0, 1才可以合併
+
         List<Long> items = vo.getItems();
         Long finalPurchaseId = purchaseId;
         List<PurchaseDetailEntity> collect = items.stream().map(i -> {
@@ -80,6 +82,37 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
         purchaseEntity.setId(purchaseId);
         purchaseEntity.setUpdateTime(new Date());
         this.updateById(purchaseEntity);
+    }
+
+    @Override
+    @Transactional
+    public void received(List<Long> ids) {
+        //1. 確認當前採購單是新建或是已分配狀態
+        List<PurchaseEntity> collect = ids.stream().map(id -> {
+            PurchaseEntity byId = this.getById(id);
+            return byId;
+        }).filter(item -> item.getStatus() == WareConstant.PurchaseStatusEnum.CREATED.getCode() ||
+                item.getStatus() == WareConstant.PurchaseStatusEnum.ASSIGNED.getCode())
+                .map(item -> {
+                    item.setStatus(WareConstant.PurchaseStatusEnum.RECEIVE.getCode());
+                    item.setUpdateTime(new Date());
+                    return item;
+                }).collect(Collectors.toList());
+
+        //2. 改變採購單的狀態(前方已經update過狀態&時間)
+        this.updateBatchById(collect);
+
+        //3. 改變採購項的狀態
+        collect.forEach(item -> {
+            List<PurchaseDetailEntity> entities = purchaseDetailService.listDetailByPurchaseId(item.getId());
+            List<PurchaseDetailEntity> collect1 = entities.stream().map(entity -> {
+                PurchaseDetailEntity purchaseDetailEntity = new PurchaseDetailEntity();
+                purchaseDetailEntity.setId(entity.getId());
+                purchaseDetailEntity.setStatus(WareConstant.PurchaseDetailStatusEnum.BUYING.getCode());
+                return purchaseDetailEntity;
+            }).collect(Collectors.toList());
+            purchaseDetailService.updateBatchById(collect1);
+        });
     }
 
 }
