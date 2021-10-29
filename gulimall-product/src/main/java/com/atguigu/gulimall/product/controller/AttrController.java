@@ -16,7 +16,6 @@ import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 
 
-
 /**
  * 商品属性
  *
@@ -44,6 +43,7 @@ public class AttrController {
      * 查詢銷售&基本屬性共用方法
      * type=base：銷售屬性
      * type=sale：基本屬性
+     *
      * @param params
      * @param type
      * @param catelogId
@@ -61,7 +61,7 @@ public class AttrController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -72,7 +72,7 @@ public class AttrController {
      * 信息
      */
     @RequestMapping("/info/{attrId}")
-    public R info(@PathVariable("attrId") Long attrId){
+    public R info(@PathVariable("attrId") Long attrId) {
 //		AttrEntity attr = attrService.getById(attrId);
 
         AttrRespVo attrRespVo = attrService.getAttrInfo(attrId);
@@ -84,7 +84,7 @@ public class AttrController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody /*AttrEntity attr*/ AttrVo attrVo){
+    public R save(@RequestBody /*AttrEntity attr*/ AttrVo attrVo) {
 //		attrService.save(attr);
 
         attrService.saveAttr(attrVo);
@@ -96,11 +96,14 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody /*AttrEntity attr*/ AttrVo attrVo){
-//		attrService.updateById(attr);
-
+    public R update(@RequestBody /*AttrEntity attr*/ AttrVo attrVo) {
         attrService.updateAttr(attrVo);
+        return R.ok();
+    }
 
+    @PostMapping("/update/{spuId}")
+    public R updateSpuAttr(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> entities) {
+        productAttrValueService.updateSpuAttr(spuId, entities);
         return R.ok();
     }
 
@@ -108,8 +111,8 @@ public class AttrController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
+    public R delete(@RequestBody Long[] attrIds) {
+        attrService.removeByIds(Arrays.asList(attrIds));
 
         return R.ok();
     }
