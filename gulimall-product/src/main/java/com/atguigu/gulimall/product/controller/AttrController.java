@@ -101,6 +101,12 @@ public class AttrController {
         return R.ok();
     }
 
+    /**
+     * 透過spuId修改SpuAttr，會先全部刪除再新增
+     * @param spuId 欲修改的spuId
+     * @param entities 封裝數據的實體類集合
+     * @return R.ok()
+     */
     @PostMapping("/update/{spuId}")
     public R updateSpuAttr(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> entities) {
         productAttrValueService.updateSpuAttr(spuId, entities);
