@@ -32,6 +32,11 @@ public class AttrController {
     @Autowired
     private ProductAttrValueService productAttrValueService;
 
+    /**
+     * 利用spuId查詢商品屬性值
+     * @param spuId
+     * @return
+     */
     @GetMapping("/base/listforspu/{spuId}")
     public R baseAttrListForSpu(@PathVariable("spuId") Long spuId) {
         List<ProductAttrValueEntity> entityList = productAttrValueService.baseAttrListForSpu(spuId);
