@@ -17,7 +17,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * 商品属性
+ * 商品属性controller
  *
  * @author jason
  * @email ya850805@gmail.com
