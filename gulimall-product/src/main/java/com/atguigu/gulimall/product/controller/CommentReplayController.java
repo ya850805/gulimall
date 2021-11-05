@@ -18,7 +18,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * 商品评价回复关系
+ * 商品评价回复关系controller
  *
  * @author jason
  * @email ya850805@gmail.com
