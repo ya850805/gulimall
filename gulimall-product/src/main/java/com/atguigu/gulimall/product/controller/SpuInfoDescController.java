@@ -18,7 +18,7 @@ import com.atguigu.common.utils.R;
 
 
 /**
- * spu信息介绍
+ * spu信息介绍controller
  *
  * @author jason
  * @email ya850805@gmail.com
