@@ -60,3 +60,10 @@
     * **GET** `/_cat/health`：查看es健康狀況
     * **GET** `/_cat/master`：查看主節點信息
     * **GET** `/_cat/indices`：查看索引，類似MySQL的`show databases`查看所有數據庫
+2. 索引一個文檔(保存)：保存一個數據，保存在哪個索引的哪個類型下，指定用哪個唯一標示，ex. `PUT customer/external/1`表示在customer索引下的external類型下保存1號數據為`{"name" : "Jason"}`(RequestBody中)
+    * **PUT** `/customer/external/1`, `{"name" : "Jason"}`
+      ![](https://i.imgur.com/9jP5WFU.png)
+      再次發送後變成**Update**
+      ![](https://i.imgur.com/OlMkYSL.png)
+    * **POST** `/customer/external`, `{"name" : "Jason"}`，不帶ID則ElasticSearch會幫我們建立一個id，帶id也行(第二次發請求後一樣變成**Update**)
+    * **PUT & POST差別**：PUT必須帶上ID
