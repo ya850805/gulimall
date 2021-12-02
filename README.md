@@ -67,3 +67,30 @@
       ![](https://i.imgur.com/OlMkYSL.png)
     * **POST** `/customer/external`, `{"name" : "Jason"}`，不帶ID則ElasticSearch會幫我們建立一個id，帶id也行(第二次發請求後一樣變成**Update**)
     * **PUT & POST差別**：PUT必須帶上ID
+3. **查詢**文檔
+    * **GET** `/customer/external/1`：查詢`customer`索引底下、`external`類型的`1`號數據
+      Response:point_right:
+        ```json=
+        {
+            "_index": "customer",
+            "_type": "external",
+            "_id": "1",
+            "_version": 2,
+            "_seq_no": 1,
+            "_primary_term": 1,
+            "found": true,
+            "_source": {
+                "name": "Jason"
+            }
+        }
+        ```
+        * `_index`：在哪個索引
+        * `_type`：在哪個類型
+        * `_id`：紀錄id
+        * `_version`：版本號
+        * `_seq_no`：**併發控制字段**，每次更新就會+1，用來做**樂觀鎖**
+        * `_primary_term`：同上，主分片重新分配，如重啟就會變化
+        * `found`：是否能被查詢
+        * `_source`：真正的內容
+
+      ==**樂觀鎖使用，更新攜帶條件**==： URL後方加上條件`?if_seq_no=1&if_primary_term=1`，代表只有在`_seq_no`為`1`且`_primary_term`也為`1`的時候才會做修改:point_right:並免併發問題發生    
