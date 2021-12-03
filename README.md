@@ -93,4 +93,10 @@
         * `found`：是否能被查詢
         * `_source`：真正的內容
 
-      ==**樂觀鎖使用，更新攜帶條件**==： URL後方加上條件`?if_seq_no=1&if_primary_term=1`，代表只有在`_seq_no`為`1`且`_primary_term`也為`1`的時候才會做修改:point_right:並免併發問題發生    
+      ==**樂觀鎖使用，更新攜帶條件**==： URL後方加上條件`?if_seq_no=1&if_primary_term=1`，代表只有在`_seq_no`為`1`且`_primary_term`也為`1`的時候才會做修改:point_right:並免併發問題發生
+4. 更新文檔
+    * **POST** `/customer/external/1/_update`, `{"doc" : {"name" : "UPDATE"}}`:point_right:一定要加`doc`，**會比較原數據**，若與原數據相同(沒有發生變化)則`result`會為`noop`、`_seq_no`也不會變
+      ![](https://i.imgur.com/LXS4fWk.png)
+        * **POST**不帶`_update`的話，response body則不用帶`docs`，這種則**不會檢查原數據**
+    * **PUT** `/customer/external/1`, `{"name" : "UPDATE"}`
+    * 更新皆可對Response Body添加新的數據      
