@@ -1,6 +1,7 @@
 package com.atguigu.common.constant;
 
 /**
+ * 商品相關constant
  * @author Jason
  */
 public class ProductConstant {
