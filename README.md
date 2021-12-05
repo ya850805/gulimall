@@ -99,4 +99,12 @@
       ![](https://i.imgur.com/LXS4fWk.png)
         * **POST**不帶`_update`的話，response body則不用帶`docs`，這種則**不會檢查原數據**
     * **PUT** `/customer/external/1`, `{"name" : "UPDATE"}`
-    * 更新皆可對Response Body添加新的數據      
+    * 更新皆可對Response Body添加新的數據
+5. 刪除文檔&索引
+    * **DELETE** `/customer/external/1`
+    * **DELETE** `/customer`
+    * **ElasticSearch不能刪除類型**(ex.external)
+6. bulk批量API
+    * **POST** `/customer/external/_bulk`，Request Body兩行為一組，每條紀錄都是獨立的，前一行失敗不會影響下一行
+      ![](https://i.imgur.com/I5iGU1H.png)
+    * 發送**POST** `/bank/account/_bulk`，新增測試數據，body連結：https://github.com/elastic/elasticsearch/blob/v7.4.2/docs/src/test/resources/accounts.json      
