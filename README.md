@@ -107,4 +107,29 @@
 6. bulk批量API
     * **POST** `/customer/external/_bulk`，Request Body兩行為一組，每條紀錄都是獨立的，前一行失敗不會影響下一行
       ![](https://i.imgur.com/I5iGU1H.png)
-    * 發送**POST** `/bank/account/_bulk`，新增測試數據，body連結：https://github.com/elastic/elasticsearch/blob/v7.4.2/docs/src/test/resources/accounts.json      
+    * 發送**POST** `/bank/account/_bulk`，新增測試數據，body連結：https://github.com/elastic/elasticsearch/blob/v7.4.2/docs/src/test/resources/accounts.json
+
+#### 進階檢索
+1. SearchAPI
+    * ElasticSearch支持2種基本方式檢索：
+        1. 通過使用**REST request URI**，發送搜索參數(uri+檢索參數):point_right:**GET** `/bank/_search?q=*&sort=account_number:asc`
+        2. 通過使用**REST request body**來發送他們(uri+請求體):point_right:**GET** `/bank/_search`(**較常用！也就是下方的Query DSL**)
+            ```
+            {
+                "query" : {
+                    "match_all" : {}
+                },
+                "sort": [
+                  {
+                    "account_number": "asc"
+                  }
+                ]
+            }
+            ```
+2. Query DSL
+    1. 基本語法格式：ElasticSearch提供了一個可以執行查詢的JSON風格的**DSL**(domain-specific language領域特定語言)。這個被稱為Query DSL。該查詢語言非常全面，並且剛開始的時候感覺有點複雜，真正學好他的方法是從一些基礎的示例開始的。
+
+
+
+
+
