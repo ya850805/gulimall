@@ -128,7 +128,33 @@
             ```
 2. Query DSL
     1. 基本語法格式：ElasticSearch提供了一個可以執行查詢的JSON風格的**DSL**(domain-specific language領域特定語言)。這個被稱為Query DSL。該查詢語言非常全面，並且剛開始的時候感覺有點複雜，真正學好他的方法是從一些基礎的示例開始的。
-
+        * 一個查詢語句的典型結構
+            ```
+            {
+                QUERY_NAME: {
+                    ARGUMENT: VALUE,
+                    ARGUMENT: VALUE
+                }
+            }
+            ```
+        * 如果是針對某個字段，那麼結構如下
+            ```
+            {
+                QUERY_NAME: {
+                    FIELD_NAME: {
+                        ARGUMENT: VALUE,
+                        ARGUMENT: VALUE
+                    }
+                }
+            }
+            ```
+        * `sort`：排序，多字段排序，會在前序字段相等時後續字段內部排序，否則以前序為準
+        * `from` + `size`：分頁功能，`from`第幾筆開始，`size`查幾筆
+        * 範例：
+          ![](https://i.imgur.com/luD3SDy.png)
+    2. 返回部分
+        * `_source`：欲查詢之欄位，類似select，多組欄位則使用["col1", "col2"]
+          ![](https://i.imgur.com/tKbYn0E.png)
 
 
 
