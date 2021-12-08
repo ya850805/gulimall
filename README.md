@@ -155,7 +155,13 @@
     2. 返回部分
         * `_source`：欲查詢之欄位，類似select，多組欄位則使用["col1", "col2"]
           ![](https://i.imgur.com/tKbYn0E.png)
-
+   3. match匹配查詢
+       * 基本類型(非字串)，精確匹配
+         ![](https://i.imgur.com/600Po6c.png)
+       * 字串，全文檢索
+         ![](https://i.imgur.com/1NBBDaF.png)
+           * 查詢結果`_score`越大代表越匹配
+           * 全文檢索按照評分進行排序，會對檢索條件進行分詞匹配
 
 
 
