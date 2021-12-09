@@ -162,6 +162,7 @@
          ![](https://i.imgur.com/1NBBDaF.png)
            * 查詢結果`_score`越大代表越匹配
            * 全文檢索按照評分進行排序，會對檢索條件進行分詞匹配
-
+   4. match_phrase短語匹配：將需要匹配的值當成一個**整體單詞**(**不分詞**)進行檢索
+      ![](https://i.imgur.com/oMB2EF2.png)
 
 
