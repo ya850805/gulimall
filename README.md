@@ -164,5 +164,6 @@
            * 全文檢索按照評分進行排序，會對檢索條件進行分詞匹配
    4. match_phrase短語匹配：將需要匹配的值當成一個**整體單詞**(**不分詞**)進行檢索
       ![](https://i.imgur.com/oMB2EF2.png)
-
+   5.  `multi_match`：多字段匹配，以下案例為address或state有包含mill字段，**會進行分詞**
+       ![](https://i.imgur.com/3JPMUut.png)
 
