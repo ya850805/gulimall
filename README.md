@@ -166,4 +166,8 @@
       ![](https://i.imgur.com/oMB2EF2.png)
    5.  `multi_match`：多字段匹配，以下案例為address或state有包含mill字段，**會進行分詞**
        ![](https://i.imgur.com/3JPMUut.png)
-
+   6. `bool`複合查詢：複合語句可以合併任何其他語句，包括複合語句。:point_right:了解這點非常重要，因為這意味著**複合語句之間可以互相嵌套**，以表達非常複雜的邏輯
+       * `must`為以下條件必須**皆**滿足
+       * `must_not`為以下條件必須**皆不**滿足
+       * `should`為應該滿足，可以滿足也可不滿足以下條件，差別在若滿足的紀錄`_score`會比較高
+         ![](https://i.imgur.com/M1ZXH3K.png)
