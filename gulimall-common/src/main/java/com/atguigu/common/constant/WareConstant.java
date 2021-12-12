@@ -1,6 +1,7 @@
 package com.atguigu.common.constant;
 
 /**
+ * Ware constant contains PurchaseStatusEnum and PurchaseDetailStatusEnum
  * @author Jason
  */
 public class WareConstant {
