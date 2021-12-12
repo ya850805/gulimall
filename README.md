@@ -171,3 +171,6 @@
        * `must_not`為以下條件必須**皆不**滿足
        * `should`為應該滿足，可以滿足也可不滿足以下條件，差別在若滿足的紀錄`_score`會比較高
          ![](https://i.imgur.com/M1ZXH3K.png)
+   7. `filter`結果過濾：並不是所有的查詢都需要產生分數，特別是那些僅用於**filter**(過濾)的文檔。為了不計算分數ElasticSearch會自動檢查場景並且優化查詢的執行
+      ![](https://i.imgur.com/76qmbSV.png)
+       * **最主要的差別是`filter`不會計算相關性得分(`_score`)** 
