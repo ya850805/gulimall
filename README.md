@@ -174,3 +174,7 @@
    7. `filter`結果過濾：並不是所有的查詢都需要產生分數，特別是那些僅用於**filter**(過濾)的文檔。為了不計算分數ElasticSearch會自動檢查場景並且優化查詢的執行
       ![](https://i.imgur.com/76qmbSV.png)
        * **最主要的差別是`filter`不會計算相關性得分(`_score`)** 
+   8. `term`：和`match`一樣，匹配某個屬性的值。**全文檢索字段用`match`**，**其他非text字段匹用`term`**
+      ![](https://i.imgur.com/4DCaJPs.png)
+       * ==**補充**==：`.keyword`是代表**整個內容就是這個字串值(精確匹配)**，`match_phrase`則是短語匹配，是整個字串**包含**這個短語就算
+         ![](https://i.imgur.com/NkWe7yp.png)
