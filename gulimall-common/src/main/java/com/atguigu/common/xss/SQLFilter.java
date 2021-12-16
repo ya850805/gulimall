@@ -12,9 +12,7 @@ import com.atguigu.common.utils.RRException;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * SQL过滤
- *
- * @author Mark sunlightcs@gmail.com
+ * SQL filter to prevent SQL injection
  */
 public class SQLFilter {
 
