@@ -178,3 +178,90 @@
       ![](https://i.imgur.com/4DCaJPs.png)
        * ==**補充**==：`.keyword`是代表**整個內容就是這個字串值(精確匹配)**，`match_phrase`則是短語匹配，是整個字串**包含**這個短語就算
          ![](https://i.imgur.com/NkWe7yp.png)
+   9. `aggregations`：聚合提供了從數據中分組、提取數據的能力。最簡單的聚合方法大致等於SQL GROUP BY和SQL聚合函數。
+       * 範例一：搜索`address`中包含`mill`的所有人的年齡分布以及平均年齡
+           ```
+           {
+             "query": {
+               "match": {
+                 "address": "mill"
+               }
+             },
+             "aggs": {
+               "ageAgg": {
+                 "terms": {
+                   "field": "age",
+                   "size": 10
+                 }
+               },
+               "ageAvg":{
+                 "avg": {
+                   "field": "age"
+                 }
+               },
+               "balanceAvg":{
+                 "avg": {
+                   "field": "balance"
+                 }
+               }
+             }
+           }
+           ```
+       * 範例二：按照年齡聚合，並且請求這些年齡段的這些人的平均薪資(使用子聚合)
+           ```
+           {
+             "query": {
+               "match_all": {}
+             },
+             "aggs": {
+               "ageAgg":{
+                 "terms": {
+                   "field": "age",
+                   "size": 100
+                 },
+                 "aggs": {
+                   "ageAvg": {
+                     "avg": {
+                       "field": "balance"
+                     }
+                   }
+                 }
+               }
+             }
+           }
+           ```
+       * 範例三：查出所有年齡分布，並且這些年齡段中M的平均薪資和F的平均薪資以及這些年齡段的總體平均薪資
+           ```
+           {
+             "query": {
+               "match_all": {}
+             },
+             "aggs": {
+               "ageAgg": {
+                 "terms": {
+                   "field": "age",
+                   "size": 100
+                 },
+                 "aggs": {
+                   "genderAgg": {
+                     "terms": {
+                       "field": "gender.keyword"
+                     },
+                     "aggs": {
+                       "balanceAvg": {
+                         "avg": {
+                           "field": "balance"
+                         }
+                       }
+                     }
+                   },
+                   "ageBalanceAvg":{
+                     "avg": {
+                       "field": "balance"
+                     }
+                   }
+                 }
+               }
+             }
+           }
+           ```
