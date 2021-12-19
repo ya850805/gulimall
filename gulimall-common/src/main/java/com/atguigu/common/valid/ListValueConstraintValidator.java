@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Used by @ListValue annotation.
  * @author Jason
  */
 public class ListValueConstraintValidator implements ConstraintValidator<ListValue, Integer> {

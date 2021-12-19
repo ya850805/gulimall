@@ -11,6 +11,7 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * Valid by ListValueConstraintValidator.
  * @author Jason
  */
 @Documented
