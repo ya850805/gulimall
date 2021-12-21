@@ -265,3 +265,9 @@
              }
            }
            ```
+3. **Mapping**映射
+    * ==**ElasticSearch7去掉Type的概念**==，為了提升ES處理數據的效率
+    * ElasticSearch數據類型：https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
+    1. 查看映射信息：**GET** `/bank/_mapping`
+    2. 創建索引並指定映射：**PUT** `/my_index`
+       ![](https://i.imgur.com/mNihxyp.png)
