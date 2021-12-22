@@ -271,3 +271,20 @@
     1. 查看映射信息：**GET** `/bank/_mapping`
     2. 創建索引並指定映射：**PUT** `/my_index`
        ![](https://i.imgur.com/mNihxyp.png)
+    3. 添加新的字段映射：**PUT** `/my_index/_mapping`:point_right:`index`若為false，代表該字段**不會被檢索到**
+       ![Uploading file..._6pmdkj6j1]()
+    4. 更新映射：對於已經存在的映射字段，我們**不能更新**，更新必須創建新的索引進行數據遷移
+    5. 數據遷移
+        1. 創建一個新索引：**PUT** `/newbank`
+        2. 數據遷移：**POST** `_reindex`
+            ```
+            {
+              "source": {
+                "index": "bank",
+                "type": "account"
+              },
+              "dest": {
+                "index": "newbank"
+              }
+            }
+            ```
