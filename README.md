@@ -288,3 +288,17 @@
               }
             }
             ```
+4. **分詞**：一個tokenizer(分詞器)接收一個字符流，將之分割為獨立的tokens(詞元，通常是獨立單詞)，然後輸出成tokens流。
+    * 默認使用`standard`分詞
+      ![](https://i.imgur.com/FcBiFSy.png)
+    1. 安裝**ik分詞器**：https://github.com/medcl/elasticsearch-analysis-ik/releases?expanded=true&page=4&q=v7.4.2
+        1. 下載跟ElasticSearch一樣的版本(v7.4.2)
+        2. 將下載的zip放到本機的`/mydata/elasticsearch/plugins`中(創建容器時已有建立**容器數據卷**作為映射，因此容器內也有這份zip了)
+        3. 解壓縮該zip
+        4. 進入容器內部(`docker exec -it [id] /bin/bash`)的`bin`目錄，下`elasticsearch-plugin list`命令，可以看現在有的plugin(目前有ik)
+        5. 重啟elasticsearch容器
+    2. 使用ik分詞
+       1.`ik_smart`
+       ![](https://i.imgur.com/uEsVGpc.png)
+        2. `ik_max_word`
+           ![](https://i.imgur.com/6M8t27Z.png)           
